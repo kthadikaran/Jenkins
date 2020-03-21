@@ -1,0 +1,39 @@
+Configure Jenkins on RHEL7
+yum update
+yum install wget
+
+Add Jenkins Repository
+wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins.io/redhat-stable/jenkins.repo
+rpm --import http://pkg.jenkins.io/redhat-stable/jenkins.io.key
+yum repolist
+
+Install Jenkins and Java
+
+yum install jenkins java-1.8.0-openjdk –y
+systemctl start jenkins
+systemctl status jenkins
+
+Configure firewall
+firewall-cmd --zone=public --add-port=8080/tcp --permanent
+
+cat /var/lib/jenkins/secrets/initialAdminPassword
+ecc358daccf14dbd84e076f585cdde5d
+
+Configure Remote Agent System
+apt install default-jre
+apt install openjdk-11-jre-headless
+apt install openjdk-8-jre-headless
+
+Create a user on the agent to be used by Jenkins
+adduser --home /var/lib/jenkins --shell /bin/bash jenkins
+su - jenkins
+$ pwd
+/var/lib/jenkins
+
+ssh-keygen -t rsa -C "Jenkins agent key"
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+
+Reset jenkins admin password
+echo -n 'redhat123{admin}' | sha256sum
+cat /var/lib/jenkins/users/admin/config.xml Replace with <passwordHash>#admin:b868ee6ad68d101ab46c8ee7569821917b4cd6375ad53ccd4d085a3e842a3bdd  </passwordHash>
