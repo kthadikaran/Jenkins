@@ -1,0 +1,31 @@
+ADD Nodes in Jenkins
+
+Continuous Integration (CI) is the process of automating the build and testing of code every time a team member commits changes to version control. 
+Continuous Delivery (CD) is the process to build, test, configure and deploy from a build to a production environment
+
+Pre requistices for agent node.
+
+You will need to install some packages on the agent node, such as Java, as well as any tools that you may require to run your builds 
+(Git, Maven, Ant, Gradle, etc.). I’ll install Java and Git:
+
+Step 1: Install the necessary packages.
+  sudo yum -y install java-1.8.0-openjdk git
+
+Step 2: Create a user on the agent to be used by Jenkins.
+  sudo useradd -d /var/lib/jenkins jenkins
+  sudo su jenkins
+  cd ~
+  [jenkins@ansible-remotehost-i ~]$ pwd
+  /var/lib/jenkins
+  
+Step 3: Generate an ssh key.Jenkins will use this key to authenticate with the agent node and log in as the jenkins user.
+  ssh-keygen
+Step 4: Add the public key to the authorized_keys file of the jenkins user on the agent node.
+
+  sudo cd /var/lib/jenkins/.ssh
+  cat id_rsa.pub > authorized_keys
+  chmod 600 authorized_keys
+  
+Step 5: Add the agent node via the Jenkins UI.
+
+
