@@ -1,4 +1,31 @@
-Configure Jenkins on RHEL7
+***Configure Jenkins on Tomcat***
+Configure Apache Tomcat
+sudo mkdir -p /opt/jenkins
+cd  /opt/jenkins
+sudo wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.38/bin/apache-tomcat-9.0.38.tar.gz
+sudo tar xvf apache-tomcat-9.0.38.tar.gz
+sudo mv apache-tomcat-9.0.38 apache-tomcat
+sudo chown -R linuxadmin:linuxadmin /opt/jenkins/
+cd /opt/jenkins/apache-tomcat/webapps/
+rm -rf *
+
+
+Install Jenkins
+wget http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+cd /opt/jenkins/apache-tomcat/bin
+./startup.sh
+
+Configure the CentOS firewalld
+
+sudo firewall-cmd --permanent --add-port=8080/tcp
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --reload
+
+Setup Jenkins
+http://192.168.25.129:8080/jenkins/
+cat /home/linuxadmin/.jenkins/secrets/initialAdminPassword
+
+***Configure standalone Jenkins on RHEL7/CentOS7***
 yum update
 yum install wget
 
